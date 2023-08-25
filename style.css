@@ -230,3 +230,8 @@ body, .btn, .form-control {
     line-height: 1.5;
     border-radius: 0;
 }
+
+
+.driver-popover {
+    max-width: 36em;
+}
