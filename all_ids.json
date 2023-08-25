@@ -1,0 +1,34 @@
+[
+    {
+        "label": "QA_biography",
+        "val": 0
+    },
+    {
+        "label": "QA_event",
+        "val": 1
+    },
+    {
+        "label": "QA_discharge_summary",
+        "val": 2
+    },
+    {
+        "label": "QA_medical_conversation",
+        "val": 3
+    },
+    {
+        "label": "Summarization_XSum_1",
+        "val": 4
+    },
+    {
+        "label": "Summarization_Xsum_2",
+        "val": 5
+    },
+    {
+        "label": "Summarization_Xsum_3",
+        "val": 6
+    },
+    {
+        "label": "Summarization_Summscreen",
+        "val": 7
+    }
+]
