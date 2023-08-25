@@ -1,0 +1,15 @@
+transformers @ git+https://github.com/huggingface/transformers@66ded238cd04e29ba98485984dd647e7d37d1603
+accelerate @ git+https://github.com/huggingface/accelerate@24ae624d96866e3f993a13fc341ea0dcb68b1470
+peft @ git+https://github.com/huggingface/peft@032fff92fb74b737a2934e91a08d82142fb79dc3
+bitsandbytes==0.39.1
+datasets==2.13.1
+deepspeed==0.9.5
+einops==0.6.1
+filelock==3.12.2
+evaluate==0.4.0
+bottle==0.12.23
+nltk
+jsonlines
+sentencepiece
+paste
+spacy
