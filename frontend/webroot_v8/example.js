@@ -1306,6 +1306,21 @@ angular.module('newapp').controller('FactChecker', function ($scope, $http) {
 
     $scope.populate_ids();
 
+    $scope.show_config = function (){
+        $.ajax({
+            type: "GET",
+            url: "./get_config",
+            success: function (data) {
+                console.log(data);
+                $scope.backend_config = data;
+                $scope.$apply();
+                $("#config_modal").modal("show");
+            }
+        });
+    };
+
+    $scope.show_config();
+
 
     $("#selectex").on("change",function (){
         job_id = $("#selectex").val();

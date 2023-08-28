@@ -62,11 +62,16 @@ if __name__=="__main__":
     parser.add_argument("--model-name", type=str, required=True)
     parser.add_argument("--port", type=int, default=9003)
     parser.add_argument("--quantize", type=str, default="16bit")
+    parser.add_argument("--max-input-len", type=int, default=5000)
+    parser.add_argument("--max-decode-len", type=int, default=150)
     args = parser.parse_args()
 
     model_name = args.model_name
     port = args.port
     quantize = args.quantize
+    max_input_len = args.max_input_len
+    max_decode_len = args.max_decode_len
+
 
     tokenizer = AutoTokenizer.from_pretrained(
         model_name,
@@ -141,6 +146,17 @@ if __name__=="__main__":
         response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
 
 
+    @app.route("/get_config", method=['GET'])
+    def get_config():
+        return  {
+            "model_name_or_path": model_name,
+            "max_input_len": max_input_len,
+            "max_decode_len": max_decode_len,
+            "precision": quantize,
+            "beam_width": nbeams
+        }
+
+
     @app.route('/predict', method=['POST'])
     def predict():
         dp = request.json
@@ -149,7 +165,7 @@ if __name__=="__main__":
 
         newdp = make_prompt(dp)
 
-        predict_generation(newdp, model=model, tokenizer=tokenizer, nbeams=1, max_input_len=5000, max_decode_len=150)
+        predict_generation(newdp, model=model, tokenizer=tokenizer, nbeams=nbeams, max_input_len=max_input_len, max_decode_len=max_decode_len)
 
         # at this point the newdp are updated in place with results
 

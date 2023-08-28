@@ -110,6 +110,7 @@ if __name__=="__main__":
     @app.route("/get_config", method=['GET'])
     def get_config():
         return  {
+            "model_name_or_path": model_path,
             "tokenizer_name_or_path": tokenizer.name_or_path,
             "max_input_len": max_input_len,
             "max_decode_len": max_decode_len

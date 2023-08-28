@@ -142,6 +142,53 @@
 
 
 
+  <div class="modal" id="config_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Welcome!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div>
+              Evidence Inspector is a tool to fact-check text, especially AI-generated text against reference documents.
+              If you would like a tutorial on how to use the system and see some examples, please visit:
+              <a href="https://evinspector.site" target="_blank">https://evinspector.site</a> <br>
+              Below you can see the configurations of the backend models powering this interface:
+          </div>
+
+        <div style="margin-top: 2em;">
+          <h5>🚀 Fact-checking model </h5>
+          <small style="color: darkred;" ng-if="!backend_config.factcheck_model.model_name_or_path.includes('flanul2')">(For better performance try the larger Flan-UL2 based model)<br></small>
+          <b>Model name:</b> {{backend_config.factcheck_model.model_name_or_path}}<br>
+          <b>Max input length:</b> {{backend_config.factcheck_model.max_input_len}}<br>
+          <b>Max output length:</b> {{backend_config.factcheck_model.max_decode_len}}<br>
+        </div>
+
+        <div style="margin-top: 2em; margin-bottom: 2em;">
+          <h5>🚀 QA model </h5>
+            <div ng-if="backend_config.qa_model===null">
+                <span style="color: darkred;">QA model not running</span>
+            </div>
+            <div ng-if="backend_config.qa_model!==null">
+              <b>Model name:</b> {{backend_config.qa_model.model_name_or_path}}<br>
+              <b>Max input length:</b> {{backend_config.qa_model.max_input_len}}<br>
+              <b>Max output length:</b> {{backend_config.qa_model.max_decode_len}}<br>
+              <b>Precision:</b> {{backend_config.qa_model.precision}}<br>
+              <b>Beam width:</b> {{backend_config.qa_model.beam_width}}<br>
+            </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+<!--        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+      </div>
+    </div>
+  </div>
+  </div>
+
 
   <div class="modal" id="save_modal">
   <div class="modal-dialog" role="document">

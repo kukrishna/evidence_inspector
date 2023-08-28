@@ -172,16 +172,22 @@ if __name__ == "__main__":
 
     while True:
         try:
-            backend_config = get_backend_config()
+            factcheck_backend_config = get_backend_config("factcheck_model")
             print("Contact established with backend! proceeding...")
             break
         except requests.exceptions.ConnectionError:
             print("Waiting for backend to start. Will ping again in 5 seconds...")
             time.sleep(5)
 
+    qa_backend_config = None
+    try:
+        qa_backend_config = get_backend_config("qa_model")
+    except requests.exceptions.ConnectionError:
+        print("QA model unreachable. Starting without it...")
 
-    tokenizer_name_or_path = backend_config["tokenizer_name_or_path"]
-    backend_config["tokenizer"] = AutoTokenizer.from_pretrained(tokenizer_name_or_path)
+
+    tokenizer_name_or_path = factcheck_backend_config["tokenizer_name_or_path"]
+    tokenizer = AutoTokenizer.from_pretrained(tokenizer_name_or_path)
 
     @app.hook('after_request')
     def enable_cors():
@@ -198,6 +204,13 @@ if __name__ == "__main__":
     def serve_job():
         html_str = open(os.path.join(web_root,"index.html")).read()
         return html_str
+
+    @app.route('/get_config', method=['GET'])
+    def get_config():
+        return {
+            "factcheck_model": factcheck_backend_config,
+            "qa_model": qa_backend_config
+        }
 
     @app.route('/get_all_ids', method=['GET'])
     def get_all_ids():
@@ -409,12 +422,12 @@ if __name__ == "__main__":
             }
 
         newdp = process_evidence_extraction_with_fixfactuality(dummy_dp)
-        inputs = backend_config["tokenizer"](newdp["input_string"], return_tensors="np", truncation=False)
+        inputs = tokenizer(newdp["input_string"], return_tensors="np", truncation=False)
         inp_shape = inputs["input_ids"].shape
         input_length = inp_shape[-1]
 
         curr_len = input_length
-        allowed_len = backend_config["max_input_len"]-backend_config["max_decode_len"]
+        allowed_len = factcheck_backend_config["max_input_len"]-factcheck_backend_config["max_decode_len"]
         to_return = {"curr_len":curr_len, "allowed_len":allowed_len, "okay": curr_len<=allowed_len}
 
         print(to_return)
