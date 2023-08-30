@@ -10,3 +10,4 @@ To run the system on Colab, go to https://colab.research.google.com/drive/1FJf24
 
 To run the system on your own machine (requires GPU), you can clone this repository and follow the same commands and instructions given in the Colab notebook.
 
+<sub>Logo adapted from: https://uxwing.com/</sub>
