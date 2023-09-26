@@ -171,6 +171,7 @@ function append_line(cm, txt, css_class, attributes_obj, withnewline){
 
 var load_datapoint = function($scope, datapoint){
 
+    $scope.job_id = datapoint["id"];
 
 
     $scope.ex_notes = datapoint["notes"];
@@ -721,6 +722,8 @@ angular.module('newapp').controller('FactChecker', function ($scope, $http) {
 
         function queueUpdate(txt, line_code, curtime) {
 
+                const old_job_id = $scope.job_id;
+
                 $scope.facteval_promisechain[line_code] = $scope.facteval_promisechain[line_code].then(function(x){
 
                     return new Promise(async (resolve,reject)=> {
@@ -750,6 +753,24 @@ angular.module('newapp').controller('FactChecker', function ($scope, $http) {
                         console.log("acquired lock");
 
                         setTimeout(function(){
+
+                            if($scope.job_id!==old_job_id){
+
+                                console.log("JOB_ID_CHANGED_SO_SKIPPING");
+                                cur_target_line_index = $scope.get_line_index_for_code(cm, line_code);
+
+                                if (cur_target_line_index==null){
+                                    console.log("WARNING: LINE CODE", line_code," NO LONGER EXISTS...");
+                                } else {
+                                    console.log("SUCCESS LINE CODE ", line_code, "MAPS TO", cur_target_line_index);
+                                    cm.setGutterMarker(cur_target_line_index, "status", makeMarkerRun());
+                                }
+                                resolve(0);
+                                sema.release();
+                                return;
+
+                            }
+
                             console.log("GETTING EVIDENCE AND FIX 2222...");
 
                             console.log("XXXXXXXXXXXXXX", $scope.cached_responses);
